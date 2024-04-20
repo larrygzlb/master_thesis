@@ -20,21 +20,18 @@ class BaseOptions():
     def initialize(self, parser):
         """Define the common options that are used in both training and test."""
         # basic parameters
-        parser.add_argument('--dataroot', default="E:/UIE_larry/UIE_larry/my_practice/datasets/mydatasets/my_aligned_dataset",
-                            required=False, help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
-
-        parser.add_argument('--name', type=str, default='unet_rgb_L2',
+        parser.add_argument('--dataroot', default=os.getenv("validset_dir"), required=False,
+                            help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
+        parser.add_argument('--name', type=str, default='facades_pix2pix',
                             help='name of the experiment. It decides where to store samples and models')
-
+        # parser.add_argument('--name', type=str, default='facades_label2photo_pretrained', help='name of the experiment. It decides where to store samples and models')
         parser.add_argument('--gpu_ids', type=str, default='0',
                             help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
         parser.add_argument('--checkpoints_dir', type=str,
                             default='./checkpoints', help='models are saved here')
         # model parameters
-
         parser.add_argument('--model', type=str, default='pix2pix',
                             help='chooses which model to use. [cycle_gan | pix2pix | test | colorization]')
-
         parser.add_argument('--input_nc', type=int, default=3,
                             help='# of input image channels: 3 for RGB and 1 for grayscale')
         parser.add_argument('--output_nc', type=int, default=3,
@@ -60,7 +57,6 @@ class BaseOptions():
         # dataset parameters
         parser.add_argument('--dataset_mode', type=str, default='unaligned',
                             help='chooses how datasets are loaded. [unaligned | aligned | single | colorization]')
-
         parser.add_argument('--direction', type=str,
                             default='AtoB', help='AtoB or BtoA')
         parser.add_argument('--serial_batches', action='store_true',
@@ -91,7 +87,7 @@ class BaseOptions():
         parser.add_argument('--suffix', default='', type=str,
                             help='customized suffix: opt.name = opt.name + suffix: e.g., {model}_{netG}_size{load_size}')
         # wandb parameters
-        parser.add_argument('--use_wandb', action='store_true',
+        parser.add_argument('--use_wandb', default=False, action='store_true',
                             help='if specified, then init wandb logging')
         parser.add_argument('--wandb_project_name', type=str,
                             default='CycleGAN-and-pix2pix', help='specify wandb project name')
